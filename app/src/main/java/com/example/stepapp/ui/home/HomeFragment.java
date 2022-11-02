@@ -58,12 +58,15 @@ public class HomeFragment extends Fragment {
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
+        // Initialize the ProgressBar variable
+        stepsCountProgressBar = root.findViewById(R.id.progressBar);
+
 
         // instance of the sensor manager for the step detector
 
         // TODO 11
         // instantiate the StepCounterListener
-        listener = new StepCounterListener(stepsCountTextView);
+        listener = new StepCounterListener(stepsCountTextView, stepsCountProgressBar);
 
         // Toggle group button
         materialButtonToggleGroup = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
@@ -129,10 +132,13 @@ class StepCounterListener implements SensorEventListener {
 
     // TextView
     TextView stepsCountTextView;
+    // ProgressBar
+    ProgressBar stepsCountProgressBar;
 
     //TODO 10
-    public StepCounterListener(TextView tv){
+    public StepCounterListener(TextView tv, ProgressBar progressBar){
         stepsCountTextView = tv;
+        stepsCountProgressBar = progressBar;
     }
 
 
@@ -170,8 +176,6 @@ class StepCounterListener implements SensorEventListener {
                             + String.valueOf(z) + " t: " + String.valueOf(date));
 
                 }
-
-
 
                 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -251,6 +255,8 @@ class StepCounterListener implements SensorEventListener {
         // Step count
         mAndroidStepCount += (int) step;
         stepsCountTextView.setText(String.valueOf(mAndroidStepCount));
+        stepsCountProgressBar.setProgress(mAndroidStepCount);
+
         Log.d("NUM STEPS ANDROID", "Num.steps: " + String.valueOf(mAndroidStepCount));
     }
 }
